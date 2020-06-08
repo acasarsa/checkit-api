@@ -13,6 +13,8 @@ class Api::V1::TasksController < ApplicationController
 
     def create 
         task = Task.create!(task_params)
+        # task = Task.create!(task_params.merge({list_id: params[:list_id]}))
+        # this violates strong params but should work for now.
         render json: task
     end
 
@@ -28,7 +30,7 @@ class Api::V1::TasksController < ApplicationController
     private 
 
     def task_params
-        params.require(:task).permit(:list, :text, :isDone, :isPinned)
+        params.require(:task).permit(:list_id, :text, :isDone, :isPinned)
     end
 
     def find_task

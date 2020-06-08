@@ -27,7 +27,7 @@ class Api::V1::ListsController < ApplicationController
     private 
 
     def list_params
-        params.require(:list).permit(:user, :title)
+        params.require(:list).permit(:user_id, :title)
     end
 
     def find_list

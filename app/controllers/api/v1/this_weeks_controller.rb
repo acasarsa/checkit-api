@@ -20,7 +20,7 @@ class Api::V1::ThisWeeksController < ApplicationController
     private 
 
     def this_week_params
-        params.require(:this_week).permit(:user, :text)
+        params.require(:this_week).permit(:user_id, :text)
     end
 end
 
