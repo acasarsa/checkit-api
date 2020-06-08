@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_03_215410) do
+ActiveRecord::Schema.define(version: 2020_06_05_010541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -24,31 +24,29 @@ ActiveRecord::Schema.define(version: 2020_06_03_215410) do
 
   create_table "notes", force: :cascade do |t|
     t.integer "user_id"
-    t.text "content"
+    t.text "text", default: ""
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "tasks", force: :cascade do |t|
     t.integer "list_id"
-    t.text "content"
+    t.text "text"
     t.boolean "isDone", default: false
-    t.boolean "isPinned"
+    t.boolean "isPinned", default: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "this_weeks", force: :cascade do |t|
     t.integer "user_id"
-    t.text "content"
+    t.text "text", default: ""
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "users", force: :cascade do |t|
     t.string "username"
-    t.string "password"
-    t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

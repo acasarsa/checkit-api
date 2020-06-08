@@ -1,12 +1,13 @@
 class Api::V1::TasksController < ApplicationController
     before_action :find_taks, only: [:show, :update, :destroy]
 
-    def show 
-        render json: task
-    end
+    # def show 
+    #     render json: task
+    # end
 
     def index 
-        tasks = Task.all
+        # User.find(params[:user_id]).lists
+        tasks = List.find(params[:list_id]).tasks
         render json: tasks
     end
 
@@ -27,7 +28,7 @@ class Api::V1::TasksController < ApplicationController
     private 
 
     def task_params
-        params.require(:task).permit(:list, :content, :isDone, :isPinned)
+        params.require(:task).permit(:list, :text, :isDone, :isPinned)
     end
 
     def find_task
