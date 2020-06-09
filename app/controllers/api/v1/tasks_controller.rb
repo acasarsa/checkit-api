@@ -1,13 +1,16 @@
 class Api::V1::TasksController < ApplicationController
-    before_action :find_taks, only: [:show, :update, :destroy]
+    before_action :find_task, only: [:show, :update, :destroy]
 
-    # def show 
-    #     render json: task
-    # end
+    def show 
+        # byebug
+        task = Task.find(params[:id])
+        render json: task
+    end
 
     def index 
         # User.find(params[:user_id]).lists
         tasks = List.find(params[:list_id]).tasks
+
         render json: tasks
     end
 
@@ -19,7 +22,9 @@ class Api::V1::TasksController < ApplicationController
     end
 
     def update
-        task.update(task_params)
+        # byebug
+        task = Task.find(params[:id])
+        task.update!(task_params)
         render json: task
     end
 
