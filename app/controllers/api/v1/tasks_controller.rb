@@ -1,5 +1,4 @@
 class Api::V1::TasksController < ApplicationController
-    before_action :find_task, only: [:show, :update, :destroy]
 
     def show 
         # byebug
@@ -29,6 +28,7 @@ class Api::V1::TasksController < ApplicationController
     end
 
     def destroy 
+        task = Task.find(params[:id])
         task.destroy
     end
 
@@ -38,7 +38,4 @@ class Api::V1::TasksController < ApplicationController
         params.require(:task).permit(:list_id, :text, :isDone, :isPinned)
     end
 
-    def find_task
-        task = Task.find(params[:id])
-    end
 end
