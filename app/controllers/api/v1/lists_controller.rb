@@ -1,7 +1,7 @@
 class Api::V1::ListsController < ApplicationController
-    before_action :find_list, only: [:show, :update, :destroy]
 
     def show 
+        list = List.find(params[:id])
         render json: list, include: [:tasks]
     end
 
@@ -16,21 +16,20 @@ class Api::V1::ListsController < ApplicationController
     end
 
     def update
+        list = List.find(params[:id])
         list.update(list_params)
         render json: list, include: [:tasks]
     end
 
     def destroy 
+        list = List.find(params[:id])
         list.destroy
     end
 
     private 
 
     def list_params
-        params.require(:list).permit(:user_id, :title)
+        params.require(:list).permit(:user_id, :title, :order)
     end
 
-    def find_list
-        list = List.find(params[:id])
-    end
 end
