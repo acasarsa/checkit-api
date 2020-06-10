@@ -35,7 +35,7 @@ class Api::V1::TasksController < ApplicationController
     private 
 
     def task_params
-        params.require(:task).permit(:list_id, :text, :isDone, :isPinned)
+        params.require(:task).permit(:list_id, :order, :text, :isDone, :isPinned)
     end
 
 end
