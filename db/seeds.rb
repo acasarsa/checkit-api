@@ -5,23 +5,23 @@
 #
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
-User.destroy_all
-puts "...destroying users"
+# User.destroy_all
+# puts "...destroying users"
 
-List.destroy_all
-puts "...destroying lists"
+# List.destroy_all
+# puts "...destroying lists"
 
-Task.destroy_all
-puts "...destroying tasks"
-
-
-u1 = User.create!(username: "ethan")
-u2 = User.create!(username: "leah")
+# Task.destroy_all
+# puts "...destroying tasks"
 
 
-list1 = List.create!(title: "For School", user: u1)
-list2 = List.create!(title: "From Mom", user: u1)
-list3 = List.create!(title: "For Work", user: u2)
+# u1 = User.create!(username: "ethan")
+# u2 = User.create!(username: "leah")
+
+
+# list1 = List.create!(title: "For School", user: u1, order: 0)
+# list2 = List.create!(title: "From Mom", user: u1, order: 1)
+# list3 = List.create!(title: "For Work", user: u2, order: 0)
 
 # task1 = Task.create!(text: "Math HW", list: list1)
 # task2 = Task.create!(text: "Make Bed", list: list2)

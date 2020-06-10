@@ -10,7 +10,7 @@ class Api::V1::TasksController < ApplicationController
         # User.find(params[:user_id]).lists
         tasks = List.find(params[:list_id]).tasks
 
-        render json: tasks
+        render json: tasks.sort_by{|task| task.order}
     end
 
     def create 

@@ -8,6 +8,7 @@ class Api::V1::ListsController < ApplicationController
     def index 
         lists = User.find(params[:user_id]).lists
         render json: lists, include: [:tasks]
+        # render json: lists.sort_by{|list| list.order}, include: [:tasks]
     end
 
     def create 
