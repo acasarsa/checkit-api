@@ -22,11 +22,26 @@ class Api::V1::ListsController < ApplicationController
         render json: list, include: [:tasks]
     end
 
+    def update_order
+        list = List.find(params[:id])
+        sibling_lists = (list.user.lists - [list]).sort_by { |list| list.order } # subset of lists can't include current list 
+
+        #  check that list[0].order == 0 then set list[0] = 0 
+        # lists = User.find(params[:user_id]).lists
+        # find current list and update it's order 
+        # find all order values sorted in this fashion: a,b => list.order ? 1 : -1 
+        # list[0].order + 1 == list[1].order if true return ? // list[1] +1 == list[2] 
+# current list from 2 to 6 any of its sibling lists 
+        # lists.each_with_index {|list, i | list.update(order: i) }
+    # moving forward then start 0 to new position less than or equal to new position
+# moving back i start at  anything greater than or equal to new_position 
+    end
+
     def destroy 
 #  you should put that logic in your model
         list = List.find(params[:id])
         list.destroy
-        sibling_lists = list.user.lists
+        sibling_lists = list.user.lists.sort_by { |list| list.order }
         sibling_lists.each_with_index {|list, i | list.update(order: i) }
         render json: sibling_lists, include: [:tasks]
         # sibling_lists = list.user.lists
