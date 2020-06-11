@@ -23,10 +23,11 @@ class Api::V1::ListsController < ApplicationController
     end
 
     def destroy 
+#  you should put that logic in your model
         list = List.find(params[:id])
         list.destroy
         sibling_lists = list.user.lists
-        sibling_lists.each_with_index {|list, i | list.update(order: i + 1) }
+        sibling_lists.each_with_index {|list, i | list.update(order: i) }
         render json: sibling_lists, include: [:tasks]
         # sibling_lists = list.user.lists
         # is_consecutive = sibling_lists.sort.each_cons(2).all? { |x,y| y == x + 1 } 
