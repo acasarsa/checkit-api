@@ -28,8 +28,12 @@ class Api::V1::TasksController < ApplicationController
     end
 
     def destroy 
+# if u hit some strang errors it could be due to nexted routes where you need to do something with List like in the index action
         task = Task.find(params[:id])
         task.destroy
+        sibling_tasks = task.list.tasks
+        sibling_tasks.each_with_index {|task, i| task.update(order: i)}
+        render json: sibling_tasks
     end
 
     private 
