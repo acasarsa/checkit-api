@@ -6,7 +6,7 @@ class Api::V1::ListsController < ApplicationController
     end
 
     def index 
-        lists = User.find(params[:user_id]).lists.sort_by{|list| list.order}
+        lists = User.find(params[:user_id]).lists
         render json: lists, include: [:tasks]
     end
 
@@ -28,14 +28,14 @@ class Api::V1::ListsController < ApplicationController
         list.reorder_siblings(start_position, new_position)
         
         list.update(list_params) 
-        reordered_lists = User.find(params[:user_id]).lists.sort_by{|list| list.order}
+        reordered_lists = User.find(params[:user_id]).lists
         render json: reordered_lists, include: [:tasks]
     end
 
     def destroy
         list = List.find(params[:id])
         list.destroy
-        remaining_lists = list.reorder_after_destroy.sort_by{|list| list.order}
+        remaining_lists = list.reorder_after_destroy
         render json: remaining_lists, include: [:tasks]
     end
 
