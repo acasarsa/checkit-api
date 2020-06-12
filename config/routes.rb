@@ -13,6 +13,7 @@ Rails.application.routes.draw do
         resources :this_weeks, only: [:create, :update]
       end
       get 'users/login/:username', to: 'users#login'
+      patch 'users/:user_id/lists/:id/update_order', to: 'lists#update_order'
     end
   end
 
