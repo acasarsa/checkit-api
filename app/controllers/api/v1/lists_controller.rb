@@ -22,12 +22,41 @@ class Api::V1::ListsController < ApplicationController
         render json: list, include: [:tasks]
     end
 
-    def update_order(new_position)
+    def update_order
         list = List.find(params[:id])
-        list.update_after_dnd(new_position)
-        reordered_lists = list.user.lists
+        start_position = list.order 
+        new_position = params[:order]
+        # start_position = list.order
+        # list.update_after_dnd(start_position, new_position)
+        sibling_lists = (list.user.lists - [list]).sort_by { | list | list.order }
+        # byebug
+        if start_position < new_position  
+            # byebug
+            less_than = sibling_lists.select { | list | list.order <= new_position }
+            less_than.each_with_index { | list, i| list.update(order: i) }
+            
+
+        elsif start_position > new_position 
+            byebug
+            greater_than = sibling_lists.select { | list | list.order >= new_position }
+            greater_than.each_with_index { | list, i| list.update(order: i) }
+            # in bye bug did some of this and found that when i do line 42 it changed the 1 el higher than new_pos to index 0!
+
+            # this one is all sorts of messed up but no idea why?
+        end
+
+        
+        list.update(list_params)
+        reordered_lists = User.find(params[:user_id]).lists
         render json: reordered_lists, include: [:tasks]
     end
+    # def update_order
+    #     list = List.find(params[:id])
+    #     # start_position = list.order
+    #     list.update_after_dnd(new_position, list_params)
+    #     reordered_lists = list.user.lists
+    #     render json: reordered_lists, include: [:tasks]
+    # end
         # list.update(list_params) #can i use list params or will this be messed up because i'm passing someting that is not going into this. 
         # sibling_lists = (list.user.lists - [list]).sort_by { |list| list.order } # subset of lists can't include current list 
         #  check that list[0].order == 0 then set list[0] = 0 
