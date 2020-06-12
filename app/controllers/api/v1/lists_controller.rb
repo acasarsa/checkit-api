@@ -22,10 +22,12 @@ class Api::V1::ListsController < ApplicationController
         render json: list, include: [:tasks]
     end
 
-    def update_order
+    def update_order(new_position)
         list = List.find(params[:id])
-        sibling_lists = (list.user.lists - [list]).sort_by { |list| list.order } # subset of lists can't include current list 
-
+        reordered_lists = list.update_after_dnd(new_position)
+        render json: reordered_lists, include: [:tasks]
+        # list.update(list_params) #can i use list params or will this be messed up because i'm passing someting that is not going into this. 
+        # sibling_lists = (list.user.lists - [list]).sort_by { |list| list.order } # subset of lists can't include current list 
         #  check that list[0].order == 0 then set list[0] = 0 
         # lists = User.find(params[:user_id]).lists
         # find current list and update it's order 
@@ -41,20 +43,9 @@ class Api::V1::ListsController < ApplicationController
 #  you should put that logic in your model
         list = List.find(params[:id])
         list.destroy
-        sibling_lists = list.user.lists.sort_by { |list| list.order }
-        sibling_lists.each_with_index {|list, i | list.update(order: i) }
-        render json: sibling_lists, include: [:tasks]
-        # sibling_lists = list.user.lists
-        # is_consecutive = sibling_lists.sort.each_cons(2).all? { |x,y| y == x + 1 } 
-        # if !is_consecutive
-            
-        # else
-        #     sibling_lists
-        # end
-
-        # list.user.lists.updateSiblingOrder
+        remaining_lists = list.update_on_destroy
+        render json: remaining_lists, include: [:tasks]
         
-# have this render the same thing that get user list does 
     end
 # add somse logic to find lists siblings all the list that have same user take an order check to  find if misssing order and adjust the thigns that follow by -1 
 # that should trigger a re-render 
