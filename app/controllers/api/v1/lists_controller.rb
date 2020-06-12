@@ -24,8 +24,10 @@ class Api::V1::ListsController < ApplicationController
 
     def update_order(new_position)
         list = List.find(params[:id])
-        reordered_lists = list.update_after_dnd(new_position)
+        list.update_after_dnd(new_position)
+        reordered_lists = list.user.lists
         render json: reordered_lists, include: [:tasks]
+    end
         # list.update(list_params) #can i use list params or will this be messed up because i'm passing someting that is not going into this. 
         # sibling_lists = (list.user.lists - [list]).sort_by { |list| list.order } # subset of lists can't include current list 
         #  check that list[0].order == 0 then set list[0] = 0 
@@ -37,7 +39,7 @@ class Api::V1::ListsController < ApplicationController
         # lists.each_with_index {|list, i | list.update(order: i) }
     # moving forward then start 0 to new position less than or equal to new position
 # moving back i start at  anything greater than or equal to new_position 
-    end
+    
 
     def destroy 
 #  you should put that logic in your model
