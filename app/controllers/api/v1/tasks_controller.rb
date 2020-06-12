@@ -24,13 +24,21 @@ class Api::V1::TasksController < ApplicationController
 
     def update_order 
         task = Task.find(params[:id])
+        list_id = params[:list_id]
         start_position = task.order 
         new_position = params[:order]
-        task.reorder_siblings(start_position, new_position)
+        # task.reorder_siblings(start_position, new_position)
 
-        task.update(task_params)
-        reordered_tasks = List.find(params[:list_id]).tasks
-        render json: reordered_tasks
+        # task.update(task_params)
+        sorted_tasks = (List.find(params([:list_id])).tasks).sort_by { |task | task.order }
+        
+        new_task_order = sorted_tasks.splice(start_position, 1)
+        reordered_tasks = sorted_tasks.splice(new_position, 0, ...new_task_order)
+        # the re-ordered tasks wihtout updated orders. 
+        render_tasks = reordered_tasks.each_with_index { | t, i | t.update(order: i) }
+
+        # reordered_tasks = List.find(params[:list_id]).tasks
+        render json: render_tasks
 
     end
 
