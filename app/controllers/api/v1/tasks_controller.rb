@@ -45,6 +45,25 @@ class Api::V1::TasksController < ApplicationController
 
     end
 
+    def update_task_list_id 
+        task = Task.find(params[:id])
+        tasks = task.list.tasks
+
+        new_position = params[:order]
+        finish_list = List.find(params[:list_id])
+
+        updated_task = task.update(list_id: finish_list.id)
+        reordered_start_tasks = task.reorder_after_destroy # start list to render 
+
+        sorted_siblings = (finish_list.tasks - [updated_task]).sort_by { |task | task.order }
+
+        recombined = (sorted_siblings.insert(new_position, updated_task)).flatten
+        reordered_tasks = recombined.each_with_index { | t, i | t.update(order: i) }
+
+        render json: [reordered_start_tasks, reordered_tasks]
+# see if u can just update the list itself to avoid looking through all the lists. 
+    end
+
     def destroy 
 # if u hit some strang errors it could be due to nexted routes where you need to do something with List like in the index action
         task = Task.find(params[:id])
