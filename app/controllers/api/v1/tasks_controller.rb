@@ -23,22 +23,19 @@ class Api::V1::TasksController < ApplicationController
     end
 
     def update_order 
+# refactor this later to change the route so it just goes to list/:id/tasks u don't need to go to the single
+# List.find(params[:list_id]).tasks
         task = Task.find(params[:id])
-        list_id = params[:list_id]
+        tasks = task.list.tasks
         start_position = task.order 
         new_position = params[:order]
-        # task.reorder_siblings(start_position, new_position)
 
-        # task.update(task_params)
-        sorted_tasks = (List.find(params([:list_id])).tasks).sort_by { |task | task.order }
-        
-        new_task_order = sorted_tasks.splice(start_position, 1)
-        reordered_tasks = sorted_tasks.splice(new_position, 0, ...new_task_order)
-        # the re-ordered tasks wihtout updated orders. 
-        render_tasks = reordered_tasks.each_with_index { | t, i | t.update(order: i) }
+        sorted_tasks = tasks.sort_by { |task | task.order }
+        sliced_task = sorted_tasks.slice!(start_position, 1)
+        recombined = (sorted_tasks.insert(new_position, sliced_task)).flatten
+        reordered_tasks = recombined.each_with_index { | t, i | t.update(order: i) }
 
-        # reordered_tasks = List.find(params[:list_id]).tasks
-        render json: render_tasks
+        render json: reordered_tasks
 
     end
 
