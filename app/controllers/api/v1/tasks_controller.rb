@@ -29,9 +29,15 @@ class Api::V1::TasksController < ApplicationController
         tasks = task.list.tasks
         start_position = task.order 
         new_position = params[:order]
+        destinationID = params[:list_id]
 
-        sorted_tasks = tasks.sort_by { |task | task.order }
+        sorted_tasks = (tasks.sort_by { |task | task.order })
+
         sliced_task = sorted_tasks.slice!(start_position, 1)
+        # byebug
+        # moved_task = sliced_task[0].update(list_id: destinationID)
+        # if sliced_task[0].list_id != 
+        # recombined = (sorted_tasks.insert(new_position, moved_task)).flatten
         recombined = (sorted_tasks.insert(new_position, sliced_task)).flatten
         reordered_tasks = recombined.each_with_index { | t, i | t.update(order: i) }
 
