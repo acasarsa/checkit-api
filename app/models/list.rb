@@ -20,11 +20,8 @@ class List < ApplicationRecord
         elsif start_position > new_position 
             greater_than = sibling_lists.select { | list | list.order >= new_position }
             greater_than.each.with_index(new_position) { |list, i| list.update(order: i + 1)}
-            #  this one is not working 
-        end
-# get the new_position from destination.index 
-        # either return self.user.lists in each or so list.user.lists in render maybe?
 
+        end
 
     end
 end
