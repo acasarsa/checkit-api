@@ -29,7 +29,7 @@ class Api::V1::TasksController < ApplicationController
         tasks = task.list.tasks
         start_position = task.order 
         new_position = params[:order]
-        destinationID = params[:list_id]
+        
 
         sorted_tasks = (tasks.sort_by { |task | task.order })
 
@@ -50,10 +50,14 @@ class Api::V1::TasksController < ApplicationController
         tasks = task.list.tasks
 
         new_position = params[:order]
-        finish_list = List.find(params[:list_id])
+        finish_list = List.find(params[:task][:list_id])
+        byebug
 
         updated_task = task.update(list_id: finish_list.id)
-        reordered_start_tasks = task.reorder_after_destroy # start list to render 
+        start_siblings_sorted = (tasks - [task]).sort_by {| task | task.order}
+        reordered_start_tasks = start_siblings_sorted.each_with_index { | t, i | t.update(order: i) }
+
+        # reordered_start_tasks = task.reorder_after_destroy # start list to render 
 
         sorted_siblings = (finish_list.tasks - [updated_task]).sort_by { |task | task.order }
 
