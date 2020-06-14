@@ -7,7 +7,7 @@ class Api::V1::TasksController < ApplicationController
     end
 
     def index 
-        tasks = List.find(params[:list_id]).tasks
+        tasks = (List.find(params[:list_id]).tasks).sort_by { |task | task.order }
         render json: tasks
     end
 
@@ -42,29 +42,34 @@ class Api::V1::TasksController < ApplicationController
         reordered_tasks = recombined.each_with_index { | t, i | t.update(order: i) }
 
         render json: reordered_tasks
-
+# if i move a 2nd time it breaks on the t.update order 
     end
 
     def update_task_list_id 
         task = Task.find(params[:id])
+        # task id right now is 132 text: "1"
         tasks = task.list.tasks
 
         new_position = params[:order]
         finish_list = List.find(params[:task][:list_id])
-        byebug
+        sorted_finish = finish_list.tasks.sort_by { |task | task.order }
 
-        updated_task = task.update(list_id: finish_list.id)
+
         start_siblings_sorted = (tasks - [task]).sort_by {| task | task.order}
         reordered_start_tasks = start_siblings_sorted.each_with_index { | t, i | t.update(order: i) }
+        
+        # seems okay so far
+        # task.update(list_id: finish_list.id)
+        task.list_id = finish_list.id
+        # task.update(list_id: finish_list.id)
 
-        # reordered_start_tasks = task.reorder_after_destroy # start list to render 
-
-        sorted_siblings = (finish_list.tasks - [updated_task]).sort_by { |task | task.order }
-
-        recombined = (sorted_siblings.insert(new_position, updated_task)).flatten
-        reordered_tasks = recombined.each_with_index { | t, i | t.update(order: i) }
-
+        recombined = (sorted_finish.insert(new_position, task )).flatten
+        task.save
+        # byebug
+        reordered_tasks = (recombined.each_with_index { | t, i | t.update(order: i) }).sort_by { |task | task.order }
+        # reordered_tasks.save
         render json: [reordered_start_tasks, reordered_tasks]
+        # byebug
 # see if u can just update the list itself to avoid looking through all the lists. 
     end
 
