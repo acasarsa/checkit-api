@@ -1,13 +1,14 @@
 class Api::V1::NotesController < ApplicationController
 
-    # def show 
-    #     note = Note.find(params[:id])
-    #     render json: note
-    # end
+    def show 
+        note = Note.find(params[:id])
+        render json: note
+    end
 
     def index
-        notes = Note.all
-        render json: notes
+        # notes = Note.all
+        note = User.find(params[:user_id]).note
+        render json: note
     end
 
     def create

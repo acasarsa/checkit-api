@@ -3,12 +3,12 @@ current_list.user.lists - [current_list]
 new_position = 2 # equal to destination.index
 siblings = current_list.user.lists - [current_list]
 
-# // siblings.pluck(:order)
+siblings.pluck(:order)
 
 sorted = siblings.sort_by { | l | l.order }
 
-# // current_list.order
-# // sorted.pluck(:order)
+current_list.order
+sorted.pluck(:order)
 sorted.select { | l | l.order <= current_list.order }
 sorted.select { |l| l.order <= new_position }
 
@@ -60,3 +60,9 @@ end
 #  if order is look at list.user.lists.order 
 
 
+# can i make a route that goes to the current listID on the back: √
+# i want to return the old list array reordered and the new list array reordered  ?
+# render json: start_list, include: [:tasks], end_list, include: [:tasks]  ?
+# i will first save the task to a var update it's list_id find the old list's tasks sort them then reset their order to index 
+# take task out of list 1 for good. => update list_id means that you need to update the list state of list 1 and list 2 
+# on back if you change the list_id it's going to just remove it from the list but it doesn't trigger the destroy action . 
