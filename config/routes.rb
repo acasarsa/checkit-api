@@ -9,8 +9,8 @@ Rails.application.routes.draw do
         end
 
         # resources :tasks, only: [:index]
-        resources :notes, only: [:create, :update]
-        resources :this_weeks, only: [:create, :update]
+        resources :notes, only: [:create, :update, :index, :show]
+        resources :this_weeks, only: [:create, :update, :index, :show]
       end
       get 'users/login/:username', to: 'users#login'
       patch 'users/:user_id/lists/:id/update_order', to: 'lists#update_order'

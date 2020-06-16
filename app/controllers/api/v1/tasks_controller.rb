@@ -64,7 +64,7 @@ class Api::V1::TasksController < ApplicationController
         # task.update(list_id: finish_list.id)
 
         recombined = (sorted_finish.insert(new_position, task )).flatten
-        task.save
+        # task.save
         # byebug
         reordered_tasks = (recombined.each_with_index { | t, i | t.update(order: i) }).sort_by { |task | task.order }
         # reordered_tasks.save
