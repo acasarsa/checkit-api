@@ -25,11 +25,8 @@ class Api::V1::ListsController < ApplicationController
         list = List.find(params[:id])
         start_position = list.order 
         new_position = params[:order]
-        list.reorder_siblings(start_position, new_position)
-        
-        list.update(list_params) 
-        reordered_lists = User.find(params[:user_id]).lists
-        render json: reordered_lists, include: [:tasks]
+        ordered = list.update_list_order(start_position, new_position)
+        render json: ordered, include: [:tasks]
     end
 
     def destroy
