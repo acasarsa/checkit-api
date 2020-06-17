@@ -51,9 +51,7 @@ class Api::V1::TasksController < ApplicationController
         reordered_start_tasks = start_siblings_sorted.each_with_index { | t, i | t.update(order: i) }
 
         task.list_id = finish_list.id
-
         recombined = (sorted_finish.insert(new_position, task )).flatten
-
         reordered_tasks = (recombined.each_with_index { | t, i | t.update(order: i) }).sort_by { |task | task.order }
 
         render json: [reordered_start_tasks, reordered_tasks]
