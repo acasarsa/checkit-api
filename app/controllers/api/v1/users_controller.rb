@@ -2,17 +2,17 @@ class Api::V1::UsersController < ApplicationController
 
     def show 
         user = User.find(params[:id])
-        render json: user, include: [:lists, :tasks], status: :ok
+        render json: user, include: [:lists, :tasks, :note], status: :ok
     end
 
     def login 
         user = User.find_by(username: params[:username])
-        render json: user, status: :ok
+        render json: user, include: [:lists, :tasks, :note], status: :ok
     end
 
     def index 
         users = User.all
-        render json: users, status: :ok
+        render json: users, include: [:lists, :tasks, :note], status: :ok
     end
 
     def create 
