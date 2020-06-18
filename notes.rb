@@ -66,3 +66,15 @@ end
 # i will first save the task to a var update it's list_id find the old list's tasks sort them then reset their order to index 
 # take task out of list 1 for good. => update list_id means that you need to update the list state of list 1 and list 2 
 # on back if you change the list_id it's going to just remove it from the list but it doesn't trigger the destroy action . 
+
+
+    # // updatedTasks => setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list))
+    # // setLists(lists.map(list => list.id === finishID ? { ...list, tasks: updatedTasks } : list))
+    # // can i make a route that goes to the current listID on the back: 
+    # // i want to return the old list array reordered and the new list array reordered 
+    # // render json: start_list, include: [:tasks], end_list, include: [:tasks] 
+    # // i will first save the task to a var update it's list_id find the old list's tasks sort them then reset their order to index 
+    # // take task out of list 1 for good. => update list_id means that you need to update the list state of list 1 and list 2 
+    # // on back if you change the list_id it's going to just remove it from the list but it doesn't trigger the destroy action . 
+    # // if save it on front. then delete it on back and then try to update that lists id i won't be able to get there, if i update the id first 
+    # // setLists(lists.map(list => list.id === listID ? { ...list, tasks: updatedTasks } : list))
