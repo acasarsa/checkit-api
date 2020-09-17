@@ -1,6 +1,7 @@
 class Api::V1::NotesController < ApplicationController
 
     def show 
+      # byebug
         note = Note.find(params[:id])
         render json: note
     end
@@ -11,11 +12,11 @@ class Api::V1::NotesController < ApplicationController
         render json: note
     end
 
-    def create
-        note = Note.find_or_create_by!(note_params)
-        # do i find by username instead? 
-        render json: note
-    end
+    # def create
+    #     note = Note.create(note_params)
+    #     # do i find by username instead? 
+    #     render json: note
+    # end
 
     def update
         note = Note.find(params[:id])

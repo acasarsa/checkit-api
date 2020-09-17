@@ -6,6 +6,7 @@ class Api::V1::ListsController < ApplicationController
     end
 
     def index 
+      # byebug
         lists = User.find(params[:user_id]).lists
         render json: lists, include: [:tasks]
     end

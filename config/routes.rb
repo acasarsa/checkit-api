@@ -9,7 +9,7 @@ Rails.application.routes.draw do
         end
 
         # resources :tasks, only: [:index]
-        resources :notes, only: [:create, :update, :index, :show]
+        resources :notes, only: [:update, :index, :show]
         resources :this_weeks, only: [:create, :update, :index, :show]
       end
       get 'users/login/:username', to: 'users#login'
