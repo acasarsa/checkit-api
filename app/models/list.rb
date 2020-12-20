@@ -9,6 +9,7 @@ class List < ApplicationRecord
         
     end
 
+    # working on alternative 
     # def reorder_siblings(start_position, new_position)
         
     #     sibling_lists = (self.user.lists - [self]).sort_by { | list | list.order }
