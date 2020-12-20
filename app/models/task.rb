@@ -6,6 +6,24 @@ class Task < ApplicationRecord
         sibling_tasks.each_with_index { | t, i | t.update(order: i) }
     end
 
+    def update_task_order(start_position, end_position, list_id) 
+        tasks = self.list.tasks
+
+        sorted_tasks = (tasks.sort_by { |task | task.order })
+        sliced_task = sorted_tasks.slice!(start_position, 1)
+
+        recombined = (sorted_tasks.insert(end_position, sliced_task)).flatten
+        reordered_tasks = recombined.each_with_index { | t, i | t.update(order: i) }
+        # if task.list_id !== finish_list = List.find(params[:task][:list_id]) then do x
+    end
+
+    def move_task_to_new_list(end_position, end_list_id)
+        tasks = self.list.tasks
+
+
+
+    end
+
     # def reorder_tasks(tasks, start_position, new_position)
         
     #     sorted_tasks = tasks.sort_by { |task | task.order }
