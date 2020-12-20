@@ -6,6 +6,15 @@ class Task < ApplicationRecord
         sibling_tasks.each_with_index { | t, i | t.update(order: i) }
     end
 
+    def update_task_order(start_position, end_position, end_list_id)
+        # need to take in start order position and end order position and 
+        # find the endList with listID // find that lists tasks and sort them.  
+        # slice from the starting list 
+
+        # slice from == delete from start list the index's should just update themselves. 
+        # you have the sliced task and you insert it into the 
+    end
+
     # def reorder_tasks(tasks, start_position, new_position)
         
     #     sorted_tasks = tasks.sort_by { |task | task.order }

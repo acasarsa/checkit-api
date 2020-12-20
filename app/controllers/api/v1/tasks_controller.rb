@@ -72,3 +72,10 @@ class Api::V1::TasksController < ApplicationController
     end
 
 end
+
+# keep a state of the list or task id's in an array. 
+# id: { 
+    # 'homework': [0, 3, 2, 1],
+    # 'chores': []
+# }
+
