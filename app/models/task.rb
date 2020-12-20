@@ -6,13 +6,38 @@ class Task < ApplicationRecord
         sibling_tasks.each_with_index { | t, i | t.update(order: i) }
     end
 
-    def update_task_order(start_position, end_position, end_list_id)
-        # need to take in start order position and end order position and 
-        # find the endList with listID // find that lists tasks and sort them.  
-        # slice from the starting list 
+    def update_task_order(start_position, end_position, list_id) 
+        tasks = self.list.tasks
 
-        # slice from == delete from start list the index's should just update themselves. 
-        # you have the sliced task and you insert it into the 
+        sorted_tasks = (tasks.sort_by { |task | task.order })
+        sliced_task = sorted_tasks.slice!(start_position, 1)
+
+        recombined = (sorted_tasks.insert(end_position, sliced_task)).flatten
+        recombined.each_with_index { | t, i | t.update(order: i) } # don't need to set this to a variable here i believe
+        # if task.list_id !== finish_list = List.find(params[:task][:list_id]) then do x
+    end
+
+    def move_task_to_new_list(end_position, end_list_id)
+        tasks = self.list.tasks
+        sorted_end_list = List.find_by(id: end_list_id).tasks.sort_by { |task | task.order }
+
+        task = self
+        task.list_id = end_list_id
+
+        end_list_with_new_task = (sorted_end_list.insert(end_position, task)).flatten
+        end_list = end_list_with_new_task 
+
+        reordered_end_list_tasks = (end_list.each_with_index { | t, i | t.update(order: i) }).sort_by { |task | task.order }
+
+        
+        # self.destroy # ??
+
+
+
+
+
+
+
     end
 
     # def reorder_tasks(tasks, start_position, new_position)
