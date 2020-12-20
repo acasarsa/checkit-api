@@ -13,12 +13,28 @@ class Task < ApplicationRecord
         sliced_task = sorted_tasks.slice!(start_position, 1)
 
         recombined = (sorted_tasks.insert(end_position, sliced_task)).flatten
-        reordered_tasks = recombined.each_with_index { | t, i | t.update(order: i) }
+        recombined.each_with_index { | t, i | t.update(order: i) } # don't need to set this to a variable here i believe
         # if task.list_id !== finish_list = List.find(params[:task][:list_id]) then do x
     end
 
     def move_task_to_new_list(end_position, end_list_id)
         tasks = self.list.tasks
+        sorted_end_list = List.find_by(id: end_list_id).tasks.sort_by { |task | task.order }
+
+        task = self
+        task.list_id = end_list_id
+
+        end_list_with_new_task = (sorted_end_list.insert(end_position, task)).flatten
+        end_list = end_list_with_new_task 
+
+        reordered_end_list_tasks = (end_list.each_with_index { | t, i | t.update(order: i) }).sort_by { |task | task.order }
+
+        
+        # self.destroy # ??
+
+
+
+
 
 
 

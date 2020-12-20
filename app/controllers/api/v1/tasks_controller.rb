@@ -35,18 +35,24 @@ class Api::V1::TasksController < ApplicationController
 
     def move_task_to_new_list 
         task = Task.find(params[:id])
-        tasks = task.list.tasks
+        tasks = task.list.tasks # remove
+        start_list_id = params[:list_id] # is the start_list id not needed i think
+        end_list_id = params[:task][:list_id] # is end_list id
+        end_position = params[:order]
 
-        new_position = params[:order]
-        finish_list = List.find(params[:task][:list_id])
-        sorted_finish = finish_list.tasks.sort_by { |task | task.order }
+        end_list = List.find(params[:task][:list_id]) # move into model
+        # byebug
+        task.destroy
+
+        
+        sorted_finish = end_list.tasks.sort_by { |task | task.order } #remove
 
 
         start_siblings_sorted = (tasks - [task]).sort_by {| task | task.order}
 
         reordered_start_tasks = start_siblings_sorted.each_with_index { | t, i | t.update(order: i) }
 
-        task.list_id = finish_list.id
+        task.list_id = end_list_id # remove
         recombined = (sorted_finish.insert(new_position, task )).flatten
         reordered_tasks = (recombined.each_with_index { | t, i | t.update(order: i) }).sort_by { |task | task.order }
 
@@ -58,6 +64,7 @@ class Api::V1::TasksController < ApplicationController
         task = Task.find(params[:id])
         task.destroy
         remaining_tasks = task.reorder_after_destroy
+        byebug
         render json: remaining_tasks
     end
 
